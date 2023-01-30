@@ -4,13 +4,13 @@ module.exports = {
     try{ 
         return res.status(200).json({
             ok : true,
-            msg : 'Lista de proyecto'
+            msg : 'Lista de tareas'
         })
     } catch (error) {
         console.log(error);
         return res.status(error.status || 500).json({
             ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-list'
+            msg : error.message || 'Upss, hubo un error en task-list'
         })
     }
 },
@@ -19,13 +19,13 @@ store : async (req,res) => {
     try{ 
         return res.status(201).json({
             ok : true,
-            msg : 'Proyecto guardado'
+            msg : 'Tarea guardada'
         })
     } catch (error) {
         console.log(error);
         return res.status(error.status || 500).json({
             ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-store'
+            msg : error.message || 'Upss, hubo un error en task-store'
         })
     }
 },
@@ -34,13 +34,13 @@ detail : async (req,res) => {
     try{ 
         return res.status(200).json({
             ok : true,
-            msg : 'Detalle del proyecto'
+            msg : 'Detalle de tarea'
         })
     } catch (error) {
         console.log(error);
         return res.status(error.status || 500).json({
             ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-detail'
+            msg : error.message || 'Upss, hubo un error en task-detail'
         })
     }
 },
@@ -49,13 +49,13 @@ update : async (req,res) => {
     try{ 
         return res.status(201).json({
             ok : true,
-            msg : 'Proyecto actualizado'
+            msg : 'Tarea actualizada'
         })
     } catch (error) {
         console.log(error);
         return res.status(error.status || 500).json({
             ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-update'
+            msg : error.message || 'Upss, hubo un error en task-update'
         })
     }
 },
@@ -64,43 +64,28 @@ remove : async (req,res) => {
     try{ 
         return res.status(200).json({
             ok : true,
-            msg : 'Proyecto eliminado'
+            msg : 'Tarea eliminada'
         })
     } catch (error) {
         console.log(error);
         return res.status(error.status || 500).json({
             ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-remove'
+            msg : error.message || 'Upss, hubo un error en task-remove'
         })
     }
 },
-addCollaborator : async (req,res) => {
+changeState : async (req,res) => {
 
     try{ 
         return res.status(200).json({
             ok : true,
-            msg : 'Colaborador agregado'
+            msg : 'Tarea completada'
         })
     } catch (error) {
         console.log(error);
         return res.status(error.status || 500).json({
             ok : false,
-            msg : error.message || 'Upss, hubo un error en collaborator-add'
-        })
-    }
-},
-removeCollaborator : async (req,res) => {
-
-    try{ 
-        return res.status(200).json({
-            ok : true,
-            msg : 'Colaborador eliminado'
-        })
-    } catch (error) {
-        console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en collaborator-remove'
+            msg : error.message || 'Upss, hubo un error en change-state'
         })
     }
 }

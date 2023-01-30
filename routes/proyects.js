@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { list, store, detail, update, remove, changeState, } = require('../controllers/tasksController')
-
-/* /api/tasks */
+const { store, list, detail, update, remove, addCollaborator, removeCollaborator } = require('../controllers/proyectController')
 
 router
     .route('/')
@@ -15,6 +13,7 @@ router
         .put(update)
         .delete(remove)
 router
-    .post('/change-state/:id', changeState)
+    .get('/collaborator/add',addCollaborator)
+    .delete('/collaborator/remove',removeCollaborator)
 
 module.exports = router;

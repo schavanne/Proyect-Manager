@@ -15,6 +15,9 @@ app
 //Rutas
 app
   .use('/api/auth',require('./routes/auth'))
+  .use('/api/users',require('./routes/users'))
+  .use('/api/proyects',require('./routes/proyects'))
+  .use('/api/tasks',require('./routes/tasks'))
 
 
 // catch 404 and forward to error handler
