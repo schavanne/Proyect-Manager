@@ -1,17 +1,45 @@
+const createError = require('http-errors');
+const User = require('../database/models/User');
+const errorResponse = require('../helpers/errorResponse');
+const generateTokenRandom = require('../helpers/generateTokenRandom');
+
 module.exports = {
     register : async (req,res) => {
 
     try{ 
+        const {name,email,password} = req.body;
+
+        if([name,email,password].includes("")){
+            throw createError(400,"Todos los campos son obligatorios");
+        
+        };
+
+        let user = await User.findOne({
+            email
+        });
+
+
+
+        if(user){
+            throw createError(400,"El email ya se encuentra registrado :(");
+        }
+
+        user = new User(req.body);
+
+        user.token = generateTokenRandom();
+
+        const userStore = await user.save();
+
+        //enviar email de confirmacion
+
         return res.status(201).json({
             ok : true,
-            msg : 'Usuario Registrado'
+            msg : 'Usuario Registrado',
+            data : userStore
         })
     } catch (error) {
-        console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error al Registrarse'
-        })
+        
+        return errorResponse(res,error, "Register")
     }
 },
 login : async (req,res) => {
