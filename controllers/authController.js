@@ -125,17 +125,27 @@ checked : async (req,res) => {
 },
 sendToken : async (req,res) => {
 
-    try{ 
+    const {email} = req.body;
+
+    try{
+        
+        let user = await User.findOne({
+            email
+        });
+
+        if(!user) throw createError(400,"Email incorrecto");
+
+        user.token = generateTokenRandom();
+        await user.save();
+
+        //todo: Enviar email para reestablecer la contrasenia
+
         return res.status(200).json({
             ok : true,
-            msg : 'Token enviado'
+            msg : 'Se ha enviado un email con las instrucciones'
         })
     } catch (error) {
-        console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en send-token'
-        })
+        return errorResponse(res,error, "send-token")
     }
 },
 verifyToken : async (req,res) => {
