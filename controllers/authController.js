@@ -31,7 +31,7 @@ module.exports = {
 
         const userStore = await user.save();
 
-        //enviar email de confirmacion
+        //enviar email de confirmacion con token
 
         return res.status(201).json({
             ok : true,
@@ -94,17 +94,33 @@ login : async (req,res) => {
 },
 checked : async (req,res) => {
 
+    const {token} = req.query; 
+
     try{ 
+
+        if(!token){
+            throw createError(400,"Token inexistente");
+        };
+
+        const user = await User.findOne({
+            token
+        });
+
+        if(!user){
+            throw createError(400,"Token invalido");
+        };
+
+        user.checked = true;
+        user.token = "";
+
+        await user.save()
+
         return res.status(201).json({
             ok : true,
-            msg : 'Usuario Checkeado'
+            msg : 'Registro completado exitosamente (:'
         })
     } catch (error) {
-        console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en checked'
-        })
+        return errorResponse(res,error, "checked")
     }
 },
 sendToken : async (req,res) => {
