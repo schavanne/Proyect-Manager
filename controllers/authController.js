@@ -3,6 +3,7 @@ const User = require('../database/models/User');
 const errorResponse = require('../helpers/errorResponse');
 const generateJWT = require('../helpers/generateJWT');
 const generateTokenRandom = require('../helpers/generateTokenRandom');
+const { confirmRegister } = require('../helpers/sendMails');
 
 module.exports = {
     register : async (req,res) => {
@@ -25,13 +26,19 @@ module.exports = {
             throw createError(400,"El email ya se encuentra registrado :(");
         }
 
+        const token = generateTokenRandom();
+
         user = new User(req.body);
 
-        user.token = generateTokenRandom();
+        user.token = token;
 
         const userStore = await user.save();
 
-        //enviar email de confirmacion con token
+        confirmRegister({
+            name : userStore.name,
+            email : userStore.email,
+            token : userStore.token
+        })
 
         return res.status(201).json({
             ok : true,
