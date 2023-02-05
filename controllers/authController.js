@@ -163,32 +163,49 @@ sendToken : async (req,res) => {
 },
 verifyToken : async (req,res) => {
 
-    try{ 
+    try{
+        
+        const {token} = req.query;
+        
+        if(!token) throw createError(400, "No hat tokrn en la peticion");
+        
+        const user = await User.findOne({
+            token
+        })
+
+        if(!user) throw createError(400, "Token invalido");
+
         return res.status(200).json({
             ok : true,
             msg : 'Token verificado'
         })
     } catch (error) {
-        console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en verify-token'
-        })
+        return errorResponse(res,error, "virify-token")
     }
 },
 changePassword : async (req,res) => {
 
     try{ 
+
+        const {token} = req.query;
+        const {password} = req.body;
+
+        if(!password) throw createError(400, "El password es obligatorio");
+
+        const user = await User.findOne({
+            token
+        });
+
+        user.password = password;
+        user.token = "",
+        await user.save();
+
         return res.status(200).json({
             ok : true,
             msg : 'Password actualizado'
         })
     } catch (error) {
-        console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en actulizar password'
-        })
+        return errorResponse(res,error, "change-password")
     }
 }
 }
