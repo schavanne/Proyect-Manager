@@ -31,5 +31,26 @@ module.exports = {
             console.log(error)
         }
 
+    },
+    forgotPassword : async (data) => {
+        const {name, email, token} = data;
+
+        try {
+
+            const infoMail = await transport.sendMail({
+                from : "Proyect Manager <proyectmanager2023.com>",
+                to : email,
+                subjet : "Reestablece tu contraseña",
+                text : "Reestablece tu contraseña en Proyect Manager",
+                html : `
+                <p>Hola! ${name}, has click en el siguiente enlace para <a href="${process.env.URL_FRONTEND}/recover-password/${token}">Reestablece tu contraseña</a></p>
+                `
+
+            })
+            console.log(infoMail)
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 }

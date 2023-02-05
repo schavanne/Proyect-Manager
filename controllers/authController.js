@@ -3,7 +3,7 @@ const User = require('../database/models/User');
 const errorResponse = require('../helpers/errorResponse');
 const generateJWT = require('../helpers/generateJWT');
 const generateTokenRandom = require('../helpers/generateTokenRandom');
-const { confirmRegister } = require('../helpers/sendMails');
+const { confirmRegister,forgotPassword} = require('../helpers/sendMails');
 
 module.exports = {
     register : async (req,res) => {
@@ -34,7 +34,7 @@ module.exports = {
 
         const userStore = await user.save();
 
-        confirmRegister({
+        await confirmRegister({
             name : userStore.name,
             email : userStore.email,
             token : userStore.token
@@ -140,12 +140,18 @@ sendToken : async (req,res) => {
             email
         });
 
-        if(!user) throw createError(400,"Email incorrecto");
+        if(!user) throw createError(400,"El email no se encuentra registrado");
 
-        user.token = generateTokenRandom();
+        const token = generateTokenRandom();
+
+        user.token = token;
         await user.save();
 
-        //todo: Enviar email para reestablecer la contrasenia
+        await forgotPassword({
+            name : user.name,
+            email : user.email,
+            token : user.token
+        });
 
         return res.status(200).json({
             ok : true,
