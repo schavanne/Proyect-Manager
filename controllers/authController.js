@@ -20,8 +20,6 @@ module.exports = {
             email
         });
 
-
-
         if(user){
             throw createError(400,"El email ya se encuentra registrado :(");
         }
@@ -42,8 +40,8 @@ module.exports = {
 
         return res.status(201).json({
             ok : true,
-            msg : 'Usuario Registrado',
-            data : userStore
+            msg : 'Se ha enviado un email con las instrucciones para completar su registro ',
+            user : userStore
         })
     } catch (error) {
         
@@ -167,7 +165,7 @@ verifyToken : async (req,res) => {
         
         const {token} = req.query;
         
-        if(!token) throw createError(400, "No hat tokrn en la peticion");
+        if(!token) throw createError(400, "No hay token en la peticion");
         
         const user = await User.findOne({
             token

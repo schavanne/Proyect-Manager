@@ -4,14 +4,17 @@ export const Login = () => {
 
   return (
     <>
-      <h1 className='text-sky-600 font-black text-4xl capitalize'>Iniciá sesión y administra tus <span className='text-slate-600'>proyectos</span></h1>
-      <form action="" className='my-10 p-8 bg-white rounded-lg border shadow-lg' noValidate>
+      <h1 className='text-sky-600 font-black text-4xl capitalize'>Iniciá sesión</h1>
+      <form 
+        action="" 
+        className='my-10 p-8 bg-white rounded-lg border shadow-lg' 
+        noValidate>
       <div className="my-5">
-        <label htmlFor="email" className="text-gray-400 block fontbold">Correo electrónico</label>
+        <label htmlFor="email" className="text-gray-400 block font-bold">Correo electrónico</label>
         <input id="email" type="email" placeholder="Ingrese su email" className="w-full mt-3 p-3 border rounded" autoComplete='off' />
       </div>
       <div className="my-5">
-        <label htmlFor="password" className="text-gray-400 block fontbold">Contraseña</label>
+        <label htmlFor="password" className="text-gray-400 block font-bold">Contraseña</label>
         <input
           id="password"
           type="password"

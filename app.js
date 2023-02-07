@@ -1,17 +1,29 @@
 require('dotenv').config();
-
+const createError = require('http-errors')
 const express = require('express');
 
 const logger = require('morgan');
 const connectDB = require('./database/config');
 
 const app = express();
+const cors = require('cors');
+const whiteList = [process.env.URL_FRONTEND];
+const corsOptions = {
+  origin : function (origin, cb) {
+    if(whiteList.includes(origin)){
+      cb(null, true)
+    }else{
+      cd(new Error('Error de cors'))
+    }
+  }
+}
 connectDB();
 
 app
   .use(logger('dev'))
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
+  .use(cors(corsOptions))
 
 //Rutas
 app
