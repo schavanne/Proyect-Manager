@@ -11,6 +11,7 @@ const exRegEmail = /^[^@]+@[^@]+\.[a-zA-Z]{2,}/;
 export const Register = () => {
 
   const [alert,setAlert] = useState({});
+  const [sending, setSending] = useState(false);
 
   const {formValues, handleInputChange, reset} = useForm ({
 
@@ -42,16 +43,28 @@ export const Register = () => {
       return null
     };
     try {
+
+      setSending(true)
+
       const {data} = await clientAxios.post('/auth/register',{
         name,
         email,
         password
       });
       //Falta mostrar que se registro o si fallo el registro
-      console.log(data.msg);
+      setSending(false)
+
+      Swal.fire({
+        icon: 'info',
+        title: 'Gracias por registrarte (:',
+        text: data.msg,
+      });
+      reset()
     } catch (error) {
       //Falta mostrar alerta error
-      console.error(error)
+      console.error(error);
+      handleShowAlert(error.response.data.msg);
+      reset()
     }
   }
 
@@ -130,7 +143,8 @@ export const Register = () => {
     </div>
     <button 
       type="submit" 
-      className="bg-sky-700 w-full py-3 text-white uppercase font-sans rounded hover:bg-sky-800 transition-colors mb-4"
+      className="bg-sky-700 w-full py-3 text-white uppercase font-sans rounded hover:bg-sky-800 transition-colors mb-4 disabled:bg-slate-400"
+      disabled = {sending}
     >
       Crear cuenta
     </button>
