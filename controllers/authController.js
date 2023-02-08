@@ -194,13 +194,16 @@ changePassword : async (req,res) => {
             token
         });
 
+        if(!user) throw createError(400, "El token es invalido");
+
+
         user.password = password;
         user.token = "",
         await user.save();
 
         return res.status(200).json({
             ok : true,
-            msg : 'Password actualizado'
+            msg : 'Password actualizado con exito (:'
         })
     } catch (error) {
         return errorResponse(res,error, "change-password")

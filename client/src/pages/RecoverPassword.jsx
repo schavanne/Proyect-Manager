@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import { Alert } from "../components/Alert";
 import { clientAxios } from "../config/clientAxios";
 
@@ -39,15 +40,41 @@ export const RecoverPassword = () => {
     checkToken()
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if(!password) {
       handleShowAlert('El password es requerido')
       return null
     }
-  }
 
+    try {
+
+      const {data} = await clientAxios.post(`/auth/reset-password?token=${token}`,{
+        password
+      });
+  
+      Swal.fire({
+        icon: 'success',
+        title: 'Password reseteado!',
+        text: data.msg,
+        confirmButtonText : "Inicia sesion",
+        allowOutsideClick : false
+      }).then(result => {
+        if(result.isConfirmed){
+          setPassword("");
+          navigate('/')
+        }
+      })
+    }catch (error) {
+      console.error(error)
+      handleShowAlert(error.response?.data.msg)
+      setPassword("");
+    }
+
+    }
+
+    
 
   return (
     <>
@@ -56,7 +83,7 @@ export const RecoverPassword = () => {
         alert.msg && <Alert {...alert} />
       }
       {
-        tokenChecked &&
+        tokenChecked ?
         (
           <form onSubmit={handleSubmit} lassName='my-10 p-8 bg-white rounded-lg border shadow-lg' noValidate>
           <div className="my-5">
@@ -72,7 +99,21 @@ export const RecoverPassword = () => {
           </div>
           <button type="submit" className="bg-sky-700 w-full py-3 text-white uppercase font-sans rounded hover:bg-sky-800 transition-colors mb-4">Resetear tu contraseña</button>
             </form>
-        )
+        ) :
+        <nav className="md:flex md:justify-between">
+            <Link
+              to={"/register"}
+              className=" text-sky-700 block text-center my-3 text-sm uppercase "
+            >
+              ¿No tenés una cuenta? Registrate
+            </Link>
+            <Link
+              to={"/"}
+              className=" text-sky-700 block text-center my-3 text-sm uppercase "
+            >
+              ¿Estás registrado? Iniciá sesión
+            </Link>
+          </nav>
       }
 
     </>

@@ -39,6 +39,7 @@ export const ConfirmAccount = () => {
           }
         })
       } catch (error) {
+        console.error(error)
         handleShowAlert(error.response?.data.msg)
       }
     }
