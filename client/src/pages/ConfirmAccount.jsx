@@ -19,7 +19,7 @@ export const ConfirmAccount = () => {
       msg
     });
 
-  }
+  };
 
   useEffect(() => {
 
