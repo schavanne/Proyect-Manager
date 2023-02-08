@@ -21,7 +21,7 @@ export const Register = () => {
     password2 : ""
 
   });
-  //console.log(handleInputChange({name:"algo",value:"algo mas"}));
+
   const {name, email, password, password2} = formValues;
 
   const handleSubmit = async (e) => {
@@ -51,7 +51,7 @@ export const Register = () => {
         email,
         password
       });
-      //Falta mostrar que se registro o si fallo el registro
+
       setSending(false)
 
       Swal.fire({
@@ -61,9 +61,8 @@ export const Register = () => {
       });
       reset()
     } catch (error) {
-      //Falta mostrar alerta error
       console.error(error);
-      handleShowAlert(error.response.data.msg);
+      handleShowAlert(error.response?.data.msg);
       reset()
     }
   }
