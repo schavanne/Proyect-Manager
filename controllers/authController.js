@@ -71,7 +71,7 @@ login : async (req,res) => {
         })
 
         if(!user){
-            throw createError(403,"Credenciales invalidas | email");
+            throw createError(403,"Credenciales invalidas");
         };
 
         if(!user.checked){
@@ -79,7 +79,7 @@ login : async (req,res) => {
         };
 
         if(!await user.checkedPassword(password)){
-            throw createError(403,"Credenciales invalidas | password");
+            throw createError(403,"Credenciales invalidas");
         }
 
         return res.status(200).json({
@@ -87,11 +87,12 @@ login : async (req,res) => {
             msg : 'Usuario Logeado',
             user : {
                 nombre : user.name,
-                email : user.email,
-                token : generateJWT({
-                    id: user._id
+                _id : user._id,
+            },
+            token : generateJWT({
+                id: user._id
             })
-            }
+            
         })
     } catch (error) {
         return errorResponse(res,error, "login")

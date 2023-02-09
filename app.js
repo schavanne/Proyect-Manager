@@ -23,7 +23,7 @@ app
   .use(logger('dev'))
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
-  .use(cors(corsOptions))
+  .use(cors())
 
 //Rutas
 app

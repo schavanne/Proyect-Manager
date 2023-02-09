@@ -1,4 +1,5 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { AuthProvider } from './context/AuthProvider'
 import {AuthLayout} from './layouts/AuthLayout'
 import { ConfirmAccount } from './pages/ConfirmAccount'
 import { ForgetPassword } from './pages/ForgetPassword'
@@ -10,6 +11,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <AuthProvider>
       <Routes>
         <Route
           path='/'
@@ -41,6 +43,7 @@ function App() {
             />
         </Route>
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

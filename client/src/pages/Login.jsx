@@ -1,11 +1,14 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import { Alert } from "../components/Alert";
+import { clientAxios } from "../config/clientAxios";
+import useAuth from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 
 export const Login = () => {
 
   const [alert,setAlert] = useState({});
+  const {setAuth} = useAuth();
   const handleShowAlert = (msg, time = true) => {
     setAlert({
       msg
@@ -31,6 +34,23 @@ export const Login = () => {
       handleShowAlert("Todos los campos son obligatorios");
       return null
     };
+
+    try {
+
+      const {data} = await clientAxios.post('/auth/login',{
+        email,
+        password
+      })
+
+      //console.log(data);
+      
+      setAuth(data.user);
+      sessionStorage.setItem('token',data.token);
+
+    }catch (error) {
+      console.error(error)
+      handleShowAlert(error.response?.data.msg)
+    }
   }
 
   return (
