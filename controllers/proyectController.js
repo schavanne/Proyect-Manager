@@ -5,7 +5,7 @@ module.exports = {
     list : async (req,res) => {
 
     try{ 
-        const proyects = await Proyect.find()
+        const proyects = await Proyect.find().where('createdBy').equals(req.user)
 
         return res.status(200).json({
             ok : true,
