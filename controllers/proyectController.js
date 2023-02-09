@@ -1,11 +1,17 @@
+const createError = require("http-errors");
+const Proyect = require("../database/models/Proyect");
+
 module.exports = {
     list : async (req,res) => {
 
     try{ 
+        const proyects = await Proyect.find()
+
         return res.status(200).json({
             ok : true,
-            msg : 'Lista de proyecto'
-        })
+            msg : 'Lista de proyecto',
+            proyects
+        });
     } catch (error) {
         console.log(error);
         return res.status(error.status || 500).json({
@@ -13,13 +19,28 @@ module.exports = {
             msg : error.message || 'Upss, hubo un error en proyect-list'
         })
     }
+
 },
 store : async (req,res) => {
 
-    try{ 
+    try{
+        const {name, description,client} = req.body;
+        if([name,description,client].includes("") || !name || !description || !client) throw createError(400,"Todos los campos son obligatorios");
+        
+        if(!req.user)throw createError(401,"Error de autenticacion");
+
+        const proyect = new Proyect(req.body);
+
+        proyect.createdBy= req.user._id;
+
+        //console.log(proyect)
+        const proyectStore = await proyect.save()
+
+
         return res.status(201).json({
             ok : true,
-            msg : 'Proyecto guardado'
+            msg : 'Proyecto guardado',
+            proyect : proyectStore
         })
     } catch (error) {
         console.log(error);

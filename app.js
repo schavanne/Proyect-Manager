@@ -7,6 +7,7 @@ const connectDB = require('./database/config');
 
 const app = express();
 const cors = require('cors');
+const checkToken = require('./middlewares/checkToken');
 const whiteList = [process.env.URL_FRONTEND];
 const corsOptions = {
   origin : function (origin, cb) {
@@ -29,7 +30,7 @@ app
 app
   .use('/api/auth',require('./routes/auth'))
   .use('/api/users',require('./routes/users'))
-  .use('/api/proyects',require('./routes/proyects'))
+  .use('/api/proyects', checkToken, require('./routes/proyects'))
   .use('/api/tasks',require('./routes/tasks'))
 
 
