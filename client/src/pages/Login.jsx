@@ -1,17 +1,51 @@
-import {Link} from "react-router-dom"
+import {useState} from "react";
+import {Link} from "react-router-dom";
+import { Alert } from "../components/Alert";
+import { useForm } from "../hooks/useForm";
 
 export const Login = () => {
+
+  const [alert,setAlert] = useState({});
+  const handleShowAlert = (msg, time = true) => {
+    setAlert({
+      msg
+    });
+
+    if(time){
+      setTimeout(() => {
+        setAlert({});
+      }, 8000);
+    }
+    reset()
+  };
+
+  const {formValues, handleInputChange ,reset }= useForm({
+    email : "",
+    password : ""
+  });
+  const {email,password} = formValues;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if([email,password].includes("")){
+      handleShowAlert("Todos los campos son obligatorios");
+      return null
+    };
+  }
 
   return (
     <>
       <h1 className='text-sky-600 font-black text-4xl capitalize'>Iniciá sesión</h1>
+      {
+        alert.msg && <Alert {...alert} />
+      }
       <form 
-        action="" 
+        onSubmit={handleSubmit} 
         className='my-10 p-8 bg-white rounded-lg border shadow-lg' 
         noValidate>
       <div className="my-5">
         <label htmlFor="email" className="text-gray-400 block font-bold">Correo electrónico</label>
-        <input id="email" type="email" placeholder="Ingrese su email" className="w-full mt-3 p-3 border rounded" autoComplete='off' />
+        <input id="email" type="email" placeholder="Ingrese su email" className="w-full mt-3 p-3 border rounded" autoComplete='off' name="email" value={email} onChange={handleInputChange} />
       </div>
       <div className="my-5">
         <label htmlFor="password" className="text-gray-400 block font-bold">Contraseña</label>
@@ -20,6 +54,9 @@ export const Login = () => {
           type="password"
           placeholder="Ingrese su contraseña"
           className="w-full mt-3 p-3 border rounded"
+          name="password"
+          value={password}
+          onChange={handleInputChange}
         />
       </div>
       <button type="submit" className="bg-sky-700 w-full py-3 text-white uppercase font-sans rounded hover:bg-sky-800 transition-colors mb-4">Iniciar sessión</button>
