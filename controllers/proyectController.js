@@ -73,9 +73,30 @@ detail : async (req,res) => {
 update : async (req,res) => {
 
     try{ 
+
+        const {id} = req.params;
+
+        if(!ObjectId.isValid(id)) throw createError(400, "No es un id válido");
+
+        const proyect = await Proyect.findById(id);
+
+        if(!proyect) throw createError(404, "Proyecto no encontrado");
+
+        if(req.user._id.toString() !== proyect.createdBy.toString()) throw createError(401, "No estas autorizado");
+
+        const {name, description,client,dataExpire} = req.body;
+
+        proyect.name = name || proyect.name;
+        proyect.description = description || proyect.description;
+        proyect.client = client || proyect.client;
+        proyect.dataExpire = dataExpire || proyect.dataExpire;
+
+        const proyectUpdated = await proyect.save()
+
         return res.status(201).json({
             ok : true,
-            msg : 'Proyecto actualizado'
+            msg : 'Proyecto actualizado',
+            proyect : proyectUpdated
         })
     } catch (error) {
         console.log(error);
