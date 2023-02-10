@@ -105,7 +105,19 @@ update : async (req,res) => {
 },
 remove : async (req,res) => {
 
-    try{ 
+    try{
+        const {id} = req.params;
+
+        if(!ObjectId.isValid(id)) throw createError(400, "No es un id válido");
+
+        const proyect = await Proyect.findById(id);
+
+        if(!proyect) throw createError(404, "Proyecto no encontrado");
+
+        if(req.user._id.toString() !== proyect.createdBy.toString()) throw createError(401, "No estas autorizado");
+
+        await proyect.deleteOne();
+
         return res.status(200).json({
             ok : true,
             msg : 'Proyecto eliminado'
