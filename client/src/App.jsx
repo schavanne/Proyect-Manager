@@ -11,13 +11,14 @@ import { Proyects } from './pages/Proyects';
 import {Proyect} from './pages/Proyect';
 import {ProyectAdd} from './pages/ProyectAdd';
 import {ProyectEdit} from './pages/ProyectEdit';
+import {ProyectProvider} from './context/ProyectsProvider'
 
 function App() {
 
   return (
     <BrowserRouter>
     <AuthProvider>
-
+  
       <Routes>
         <Route
           path='/'
@@ -56,7 +57,7 @@ function App() {
           <Route path=":id" element={<Proyect/>}/>
         </Route>
       </Routes>
-
+    
     </AuthProvider>
     </BrowserRouter>
   )
