@@ -1,20 +1,23 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import { AuthProvider } from './context/AuthProvider'
-import {AuthLayout} from './layouts/AuthLayout'
-import { ProtectedLayout } from './layouts/ProtectedLayout'
-import { ConfirmAccount } from './pages/ConfirmAccount'
-import { ForgetPassword } from './pages/ForgetPassword'
-import {Login} from './pages/Login'
-import { RecoverPassword } from './pages/RecoverPassword'
-import {Register} from './pages/Register'
-import { Proyects } from './pages/Proyects'
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import { AuthProvider } from './context/AuthProvider';
+import {AuthLayout} from './layouts/AuthLayout';
+import { ProtectedLayout } from './layouts/ProtectedLayout';
+import { ConfirmAccount } from './pages/ConfirmAccount';
+import { ForgetPassword } from './pages/ForgetPassword';
+import {Login} from './pages/Login';
+import { RecoverPassword } from './pages/RecoverPassword';
+import {Register} from './pages/Register';
+import { Proyects } from './pages/Proyects';
+import {Proyect} from './pages/Proyect';
+import {ProyectAdd} from './pages/ProyectAdd';
+import {ProyectEdit} from './pages/ProyectEdit';
 
 function App() {
 
   return (
     <BrowserRouter>
     <AuthProvider>
-    <ProyectsProvider>
+
       <Routes>
         <Route
           path='/'
@@ -53,10 +56,10 @@ function App() {
           <Route path=":id" element={<Proyect/>}/>
         </Route>
       </Routes>
-      </ProyectsProvider>
+
     </AuthProvider>
     </BrowserRouter>
   )
-}
+};
 
-export default App
+export default App;

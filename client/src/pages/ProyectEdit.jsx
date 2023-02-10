@@ -3,9 +3,9 @@ import { FormProyect } from "../components/FormProyect";
 export const ProyectEdit = () => {
   return (
     <>
-      <div>
-        <h1>Editar proyecto: Nombre del proyecto</h1>
-        <div>
+      <div className="flex justify-between">
+        <h1 className="text-4xl font-black">Editar proyecto: Nombre del proyecto</h1>
+        <div className="flex justify-center items-center gap-2 text-gray-600 hover:text-black">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -26,13 +26,14 @@ export const ProyectEdit = () => {
             />
           </svg>
           <button
+          className="uppercase font-bold"
           /* onClick={} */
           >
             Eliminar
           </button>
         </div>
       </div>
-      <div>
+      <div className="mt-10 flex justify-center">
         <FormProyect />
       </div>
     </>

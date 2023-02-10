@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Collaborator } from "../components/Collaborator";
+import { Task } from "../components/Task";
+
 export const Proyect = () => {
   return (
-    <div>
-      <div>
-        <h1>Nombre del proyecto</h1>
-        <Link to={`/proyects/edit-proyect/:id`}>
+    <>
+      <div className="flex justify-between">
+        <h1 className="text-4xl uppercase font-bold">Nombre del proyecto</h1>
+        <Link to={`/proyects/edit-proyect/:id`} className="flex justify-center items-center gap-2 text-gray-500 hover:text-black uppercase font-bold">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -25,9 +28,10 @@ export const Proyect = () => {
           <p>Editar</p>
         </Link>
       </div>
-      <div>
-        <p>Tareas del proyecto</p>
+      <div className="flex justify-between">
+        <p className="font-bold text-3xl mt-10 mb-5">Tareas del proyecto</p>
         <div
+        className="flex justify-center items-center gap-1 text-gray-500 hover:text-black cursor-pointer"
         /* onClick={} */
         >
           <svg
@@ -47,10 +51,15 @@ export const Proyect = () => {
           <p>Nueva Tarea</p>
         </div>
       </div>
-      Aquí se mostrarán todas las tareas //todo: componente Task
-      <div>
-        <p>Colaboradores</p>
+      {
+        [1,2].map(task => (
+          <Task/>
+        ))
+      }
+      <div className="flex items-center justify-between">
+        <p className="font-bold text-3xl mt-10 mb-5">Colaboradores</p>
         <button
+        className="flex justify-center items-center gap-1 text-gray-500 hover:text-black cursor-pointer"
         /* onClick={} */
         >
           <svg
@@ -72,7 +81,11 @@ export const Proyect = () => {
           <p>Agregar Colaborador</p>
         </button>
       </div>
-      Aquí se mostrarán todos los colaboradores //todo: componente Collaborator
-    </div>
+      {
+        [1,2].map(collaborator => (
+          <Collaborator/>
+        ))
+      }
+    </>
   );
 };
