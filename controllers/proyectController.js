@@ -84,12 +84,12 @@ update : async (req,res) => {
 
         if(req.user._id.toString() !== proyect.createdBy.toString()) throw createError(401, "No estas autorizado");
 
-        const {name, description,client,dataExpire} = req.body;
+        const {name, description,client,dateExpire} = req.body;
 
         proyect.name = name || proyect.name;
         proyect.description = description || proyect.description;
         proyect.client = client || proyect.client;
-        proyect.dataExpire = dataExpire || proyect.dataExpire;
+        proyect.dateExpire = dateExpire || proyect.dateExpire;
 
         const proyectUpdated = await proyect.save()
 

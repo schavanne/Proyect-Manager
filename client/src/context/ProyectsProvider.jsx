@@ -11,6 +11,8 @@ const [loading, setLoading] = useState(true);
 
 const [proyects, setProyects] = useState([]);
 
+const [proyect, setProyect] = useState({});
+
 const showAlert = (msg, time = true) => {
     setAlert({
       msg
@@ -43,12 +45,37 @@ const showAlert = (msg, time = true) => {
         setProyects(data.proyects)
     }catch (error){
         console.error;
-
-        showAlert(error.response ? error.response.data.msg : 'Upps, hubo un error')
+        showAlert(error.response ? error.response.data.msg : 'Upps, hubo un error',false)
     }finally {
         setLoading(false)
     }
 
+  }
+
+  const getProyect = async (id) => {
+    setLoading(true);
+
+    try {
+        const token = sessionStorage.getItem('token');
+        if(!token) return null
+
+        const config = {
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : token
+            }
+
+        }
+
+        const {data} = await clientAxios.get(`/proyects/${id}`, config);
+        setProyect(data.proyect)
+
+    }catch (error){
+        console.error;
+        showAlert(error.response ? error.response.data.msg : 'Upps, hubo un error',false)
+    }finally {
+        setLoading(false)
+    }
   }
 
     return (
@@ -58,7 +85,9 @@ const showAlert = (msg, time = true) => {
                 alert,
                 showAlert,
                 proyects,
-                getProyects
+                getProyects,
+                proyect,
+                setProyect,
             }}
         >
             {children}

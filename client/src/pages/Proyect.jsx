@@ -1,9 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import { Collaborator } from "../components/Collaborator";
 import { Task } from "../components/Task";
+import {useProyects} from "../hooks/useProyects";
 
 export const Proyect = () => {
+
+  const {loading, alert, getProyect, proyect} = useProyects();
+
+  const {name, description, dateExpire, client} = proyect
+
+  useEffect(() => {
+    getProyect()
+  }, []);
+
+
   return (
     <>
       <div className="flex justify-between">
