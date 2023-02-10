@@ -14,6 +14,7 @@ function App() {
   return (
     <BrowserRouter>
     <AuthProvider>
+    <ProyectsProvider>
       <Routes>
         <Route
           path='/'
@@ -44,17 +45,16 @@ function App() {
               element={<h1>404 Not Found</h1>}
             />
         </Route>
-        <Route
-          path='/proyects'
-          element={<ProtectedLayout/>}
-          >
-            <Route 
-              index
-              element={<Proyects/>}
-            />
-          </Route>
+        {/* Rutas privadas*/}
+        <Route path="/proyects" element={<ProtectedLayout />}>
+          <Route index element={<Proyects />} />
+          <Route path="create-proyect" element={<ProyectAdd />} />
+          <Route path="edit-proyect/:id" element={<ProyectEdit />} />
+          <Route path=":id" element={<Proyect/>}/>
+        </Route>
       </Routes>
-      </AuthProvider>
+      </ProyectsProvider>
+    </AuthProvider>
     </BrowserRouter>
   )
 }
