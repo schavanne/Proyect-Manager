@@ -38,7 +38,7 @@ store : async (req,res) => {
 
         return res.status(201).json({
             ok : true,
-            msg : 'Proyecto guardado',
+            msg : 'Proyecto guardado con exito',
             proyect : proyectStore
         })
     } catch (error) {
