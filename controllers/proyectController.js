@@ -1,5 +1,7 @@
 const createError = require("http-errors");
 const Proyect = require("../database/models/Proyect");
+const errorResponse = require("../helpers/errorResponse");
+const ObjectId = require("mongoose").Types.ObjectId
 
 module.exports = {
     list : async (req,res) => {
@@ -14,10 +16,7 @@ module.exports = {
         });
     } catch (error) {
         console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-list'
-        })
+        return errorResponse(res,error, "proyect-list")
     }
 
 },
@@ -44,25 +43,31 @@ store : async (req,res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-store'
-        })
+        return errorResponse(res,error, "proyect-store")
     }
 },
 detail : async (req,res) => {
 
     try{ 
+        const {id} = req.params;
+
+        if(!ObjectId.isValid(id)) throw createError(400, "No es un id válido");
+
+        const proyect = await Proyect.findById(id);
+
+        if(!proyect) throw createError(404, "Proyecto no encontrado");
+
+        if(req.user._id.toString() !== proyect.createdBy.toString()) throw createError(401, "No estas autorizado")
+
+
         return res.status(200).json({
             ok : true,
-            msg : 'Detalle del proyecto'
+            msg : 'Detalle del proyecto',
+            proyect
         })
     } catch (error) {
         console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-detail'
-        })
+        return errorResponse(res,error, "proyect-detail")
     }
 },
 update : async (req,res) => {
@@ -74,10 +79,7 @@ update : async (req,res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-update'
-        })
+        return errorResponse(res,error, "proyect-update")
     }
 },
 remove : async (req,res) => {
@@ -89,10 +91,7 @@ remove : async (req,res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en proyect-remove'
-        })
+        return errorResponse(res,error, "proyect-remove")
     }
 },
 addCollaborator : async (req,res) => {
@@ -104,10 +103,8 @@ addCollaborator : async (req,res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en collaborator-add'
-        })
+        return errorResponse(res,error, "collaborator-add")
+        
     }
 },
 removeCollaborator : async (req,res) => {
@@ -119,10 +116,7 @@ removeCollaborator : async (req,res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(error.status || 500).json({
-            ok : false,
-            msg : error.message || 'Upss, hubo un error en collaborator-remove'
-        })
+        return errorResponse(res,error, "collaborator-remove")
     }
 }
 }
