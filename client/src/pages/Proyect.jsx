@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Alert } from "../components/Alert";
 import { Collaborator } from "../components/Collaborator";
 import { Task } from "../components/Task";
 import { useProyects } from "../hooks/useProyects";
