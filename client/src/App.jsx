@@ -18,7 +18,7 @@ function App() {
   return (
     <BrowserRouter>
     <AuthProvider>
-  
+    <ProyectProvider>
       <Routes>
         <Route
           path='/'
@@ -57,7 +57,7 @@ function App() {
           <Route path=":id" element={<Proyect/>}/>
         </Route>
       </Routes>
-    
+      </ProyectProvider>
     </AuthProvider>
     </BrowserRouter>
   )

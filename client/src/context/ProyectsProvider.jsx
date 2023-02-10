@@ -56,7 +56,7 @@ const showAlert = (msg, time = true) => {
 
         }
 
-        const {data} = await clientAxios.get('/proyects', config)
+        const {data} = await clientAxios.get('/proyects', config);
         //console.log(data)
         setProyects(data.proyects)
     }catch (error){
@@ -116,7 +116,7 @@ const showAlert = (msg, time = true) => {
 
         });
 
-        navigate('proyect')
+        navigate('proyects')
 
     }catch (error){
         console.error;
