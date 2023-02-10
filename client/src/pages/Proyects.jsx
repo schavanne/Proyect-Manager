@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { ProyectPreview } from "../components/ProyectPreview";
 import { useProyects } from "../hooks/useProyects";
 

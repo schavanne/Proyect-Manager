@@ -1,11 +1,11 @@
 import React from "react";
 import { useForm } from "../hooks/useForm";
-import { useProjects } from "../hooks/useProjects";
+import { useProyects } from "../hooks/useProyects";
 import { Alert } from "./Alert";
 
 
 export const FormProyect = () => {
-  const {alert, showAlert, storeProject} = useProjects();
+  const {alert, showAlert, storeProyect} = useProyects();
   const {formValues, handleInputChange, reset} = useForm({
     name : "",
     description : "",
@@ -21,7 +21,7 @@ export const FormProyect = () => {
       return null
     };
 
-    storeProject({
+    storeProyect({
       name,
       description,
       dateExpire,
