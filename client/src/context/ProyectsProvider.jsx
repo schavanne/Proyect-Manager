@@ -107,14 +107,36 @@ const showAlert = (msg, time = true) => {
 
         }
 
-        const {data} = await clientAxios.post(`/proyects/`,proyect, config);
-        setProyects([...proyects, data.proyect]);
+        if(proyect.id){
+            const {data} = await clientAxios.put(`/proyects/${proyect.id}`,proyect, config);
+            //console.log(data)
+            //return null
 
-        Toast.fire({
-            icon : 'sucess',
-            title : data.msg
+            const proyectsUpdated = proyects.map(proyectState => {
+                if(proyectState._id === data.proyect._id){
+                return data.proyect
+                }
+                return proyectState
+            });
 
-        });
+            setProyects(proyectsUpdated);
+
+            Toast.fire({
+                icon : 'sucess',
+                title : data.msg
+    
+            });
+
+        }else{
+            const {data} = await clientAxios.post(`/proyects/`,proyect, config);
+            setProyects([...proyects, data.proyect]);
+
+            Toast.fire({
+                icon : 'sucess',
+                title : data.msg
+    
+            });
+        }
 
         navigate('proyects')
 

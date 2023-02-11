@@ -16,7 +16,7 @@ export const FormProyect = () => {
   const inputDateExpire = useRef(null);
   const inputClient = useRef(null);
 
-  const {formValues, handleInputChange, reset} = useForm({
+  const {formValues, handleInputChange, reset, setFormValues} = useForm({
     name : "",
     description : "",
     dateExpire : "",
@@ -26,20 +26,20 @@ export const FormProyect = () => {
 
   useEffect(() => {
     if(id) {
-      //const {name, description, dateExpire, client} = proyect;
       inputName.current.value = proyect.name;
       inputDescription.current.value = proyect.description;
       inputDateExpire.current.value = proyect.dateExpire.split('T')(0);
       inputClient.current.value = proyect.client;
-      
-      name = proyect.name;
-      description = proyect.name;
-      dateExpire = proyect.name;
-      client = proyect.client;
-    }
-  }, [id]);
 
-  
+    setFormValues({    
+      name: proyect.name,
+      description: proyect.name,
+      dateExpire: proyect.name,
+      client: proyect.client,
+      })
+    }
+
+  }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -56,6 +56,7 @@ export const FormProyect = () => {
     });
 
     storeProyect({
+      id : id ? id : null,
       name,
       description,
       dateExpire,
