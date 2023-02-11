@@ -11,7 +11,7 @@ export const Proyect = () => {
 
   const { loading, alert, getProyect, proyect } = useProyects();
 
-  const { name, description, dateExpire, client } = proyect;
+  const { name, description, dateExpire, client, _id } = proyect;
 
   useEffect(() => {
     getProyect(id);
@@ -28,7 +28,7 @@ export const Proyect = () => {
           <div className="flex justify-between">
             <h1 className="text-4xl uppercase font-bold">{name}</h1>
             <Link
-              to={`/proyects/edit-proyect/:id`}
+              to={`/proyects/edit-proyect/${_id}`}
               className="flex justify-center items-center gap-2 text-gray-500 hover:text-black uppercase font-bold"
             >
               <svg
@@ -50,7 +50,10 @@ export const Proyect = () => {
               <p>Editar</p>
             </Link>
           </div>
-          <h2 className="text-4xl uppercase font-bold text-gray-700">{client}</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="text-4xl uppercase font-bold text-gray-700">{client}</h2>
+            <p>Fecha de entega: {dateExpire && dateExpire.split('T')[0]}</p>
+          </div>
           <hr className="border-b border-gray-700"/>
           <p>{description}</p>
           <div className="flex justify-between">
@@ -77,7 +80,7 @@ export const Proyect = () => {
             </div>
           </div>
           {[1, 2].map((task) => (
-            <Task />
+            <Task key={task}/>
           ))}
           <div className="flex items-center justify-between">
             <p className="font-bold text-3xl mt-10 mb-5">Colaboradores</p>
@@ -105,7 +108,7 @@ export const Proyect = () => {
             </button>
           </div>
           {[1, 2].map((collaborator) => (
-            <Collaborator />
+            <Collaborator key={collaborator} />
           ))}
         </>
       )}

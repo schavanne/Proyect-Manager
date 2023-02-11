@@ -1,18 +1,45 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
+import { useParams } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import { useProyects } from "../hooks/useProyects";
 import { Alert } from "./Alert";
 
 
 export const FormProyect = () => {
-  const {alert, showAlert, storeProyect} = useProyects();
+
+  const {alert, showAlert, storeProyect, proyect} = useProyects();
+
+  const {id} = useParams();
+
+  const inputName = useRef(null);
+  const inputDescription = useRef(null);
+  const inputDateExpire = useRef(null);
+  const inputClient = useRef(null);
+
   const {formValues, handleInputChange, reset} = useForm({
     name : "",
     description : "",
     dateExpire : "",
     client : ""
   })
-  const {name, description, dateExpire, client} = formValues;
+  let {name, description, dateExpire, client} = formValues;
+
+  useEffect(() => {
+    if(id) {
+      //const {name, description, dateExpire, client} = proyect;
+      inputName.current.value = proyect.name;
+      inputDescription.current.value = proyect.description;
+      inputDateExpire.current.value = proyect.dateExpire.split('T')(0);
+      inputClient.current.value = proyect.client;
+      
+      name = proyect.name;
+      description = proyect.name;
+      dateExpire = proyect.name;
+      client = proyect.client;
+    }
+  }, [id]);
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -20,6 +47,13 @@ export const FormProyect = () => {
       showAlert("Todos los campos son obligatorios");
       return null
     };
+
+    console.log({
+      name,
+      description,
+      dateExpire,
+      client
+    });
 
     storeProyect({
       name,
@@ -38,7 +72,7 @@ export const FormProyect = () => {
      }
       <div className="mb-5">
         <label htmlFor="name" className="text-gray-700 uppercase font-bold text-sm">Nombre Proyecto</label>
-        <input id="name" type="text" className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md" placeholder="Nombre del proyecto" value={name} onChange={handleInputChange} name="name"/>
+        <input id="name" type="text" className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md" placeholder="Nombre del proyecto" value={name} onChange={handleInputChange} name="name" ref={inputName}/>
       </div>
       <div className="mb-5">
         <label htmlFor="description" className="text-gray-700 uppercase font-bold text-sm">Descripción</label>
@@ -51,18 +85,19 @@ export const FormProyect = () => {
           value={description}
           onChange={handleInputChange}
           name="description"
+          ref={inputDescription}
         />
       </div>
       <div className="mb-5">
         <label htmlFor="date-expire" className="text-gray-700 uppercase font-bold text-sm">Fecha de entrega</label>
-        <input id="date-expire" type="date" className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md" value={dateExpire} onChange={handleInputChange} name="dateExpire"/>
+        <input id="date-expire" type="date" className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md" value={dateExpire} onChange={handleInputChange} name="dateExpire" ref={inputDateExpire}/>
       </div>
       <div className="mb-5">
         <label htmlFor="client" className="text-gray-700 uppercase font-bold text-sm" >Nombre Cliente</label>
-        <input id="client" type="text" className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md" placeholder="Nombre del cliente" value={client} onChange={handleInputChange} name="client" />
+        <input id="client" type="text" className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md" placeholder="Nombre del cliente" value={client} onChange={handleInputChange} name="client" ref={inputClient} />
       </div>
       <button className={`${false ? "bg-green-600" : "bg-sky-600"} w-full p-3 uppercase font-bold text-white rounded-lg ${false ? "hover:bg-green-500" : "hover:bg-sky-500"}  transition-colors`}>
-        {false ? "actualizar cambios" : "guardar proyecto"}</button>
+        {id ? "actualizar cambios" : "guardar proyecto"}</button>
     </form>
   );
 };
