@@ -3,15 +3,54 @@ import { Link, useParams } from "react-router-dom";
 import { Collaborator } from "../components/Collaborator";
 import { Task } from "../components/Task";
 import { useProyects } from "../hooks/useProyects";
+import { clientAxios } from "../config/clientAxios";
 import { Alert } from "../components/Alert";
-
+import { useForm } from "../hooks/useForm";
 export const Proyect = () => {
 
   const {id} = useParams();
 
   const { loading, alert, getProyect, proyect } = useProyects();
 
-  const { name, description, dateExpire, client, _id } = proyect;
+  const { name, description, dateExpire, client, _id,collaborators } = proyect;
+
+  const {formValues, handleInputChange ,reset }= useForm({
+    collaborator : "",
+  });
+  const {collaborator} = formValues;
+
+  const addCollaborator = async (e) => {
+    e.preventDefault();
+    if([collaborator].includes("")){
+      handleShowAlert("Todos los campos son obligatorios");
+      return null
+    };
+    try {
+      console.log(collaborator);
+      const {data} = await clientAxios.get('/users/getUser/'+collaborator)
+
+      if(data.ok == true){
+        const token = sessionStorage.getItem('token');
+
+        const config = {
+            headers : {
+                "Content-Type" : "application/json",
+                "Authorization" : token
+            }
+        }
+        console.log(token);
+        const {result} = await clientAxios.post('/proyects/collaborator/add/'+_id,config);
+      }
+      else{
+        //Debe mostrar un error en el formulario de agregar colaborador
+      }
+      
+
+    }catch (error) {
+      console.error(error)
+      handleShowAlert(error.response?.data.msg)
+    }
+  }
 
   useEffect(() => {
     getProyect(id);
@@ -86,7 +125,7 @@ export const Proyect = () => {
             <p className="font-bold text-3xl mt-10 mb-5">Colaboradores</p>
             <button
               className="flex justify-center items-center gap-1 text-gray-500 hover:text-black cursor-pointer"
-              /* onClick={} */
+              /*onClick={}*/
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -106,8 +145,13 @@ export const Proyect = () => {
               </svg>
               <p>Agregar Colaborador</p>
             </button>
+            <form onSubmit={addCollaborator}>
+              <input type="text" name="collaborator" onChange={handleInputChange}/>
+              <button type="submit">Agregar</button>
+            </form>
           </div>
-          {[1, 2].map((collaborator) => (
+          {console.log(collaborators)}
+          {collaborators.map((collaborator) => (
             <Collaborator key={collaborator} />
           ))}
         </>

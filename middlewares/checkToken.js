@@ -5,6 +5,7 @@ const User = require("../database/models/User");
 
 module.exports = async (req,res,next) => {
     try {
+        console.log(req.headers);
         if(!req.headers.authorization){
             throw createHttpError(401, "Se requiere un token");
         }

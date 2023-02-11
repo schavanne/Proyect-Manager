@@ -130,19 +130,46 @@ remove : async (req,res) => {
 addCollaborator : async (req,res) => {
 
     try{ 
-        return res.status(200).json({
+
+        const {id} = req.params;
+
+        if(!ObjectId.isValid(id)) throw createError(400, "No es un id válido");
+
+        const proyect = await Proyect.findById(id);
+
+        if(!proyect) throw createError(404, "Proyecto no encontrado");
+
+        //if(req.user._id.toString() !== proyect.createdBy.toString()) throw createError(401, "No estas autorizado");
+
+        const {collaborator} = req.body;
+
+        console.log(proyect)
+        return false;
+
+        return res.status(201).json({
             ok : true,
-            msg : 'Colaborador agregado'
+            msg : 'Proyecto actualizado',
+
         })
     } catch (error) {
         console.log(error);
-        return errorResponse(res,error, "collaborator-add")
-        
+        return errorResponse(res,error, "proyect-update")
     }
 },
 removeCollaborator : async (req,res) => {
 
     try{ 
+        const {id,idCollab} = req.params;
+
+        if(!ObjectId.isValid(id)) throw createError(400, "No es un id válido");
+
+        const proyect = await Proyect.findById(id);
+
+        if(!proyect) throw createError(404, "Proyecto no encontrado");
+
+        if(req.user._id.toString() !== proyect.createdBy.toString()) throw createError(401, "No estas autorizado");
+
+        console.log(proyect)
         return res.status(200).json({
             ok : true,
             msg : 'Colaborador eliminado'

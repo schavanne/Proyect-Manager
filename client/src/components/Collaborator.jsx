@@ -1,5 +1,25 @@
 import React from "react";
-export const Collaborator = () => {
+import { useParams } from "react-router-dom";
+import { useProyects } from "../hooks/useProyects";
+
+export const Collaborator = (key) => {
+  const {deleteCollaborator} = useProyects();
+  const {id} = useParams()
+
+
+  const handleDelete = () => {
+    let idCollab = key;
+    Swal.fire({
+      title: '¿Estás seguro de eliminar el colaborador?',
+      showCancelButton: true,
+      confirmButtonColor : 'red',
+      confirmButtonText: 'Confirmar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCollaborator(id,idCollab)
+      } 
+    })
+  }
   return (
     <div className="bg-white border shadow-md rounded p-5 justify-between flex items-center">
       <p className="font-bold uppercase">

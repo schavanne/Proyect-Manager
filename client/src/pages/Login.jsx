@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import { Alert } from "../components/Alert";
 import { clientAxios } from "../config/clientAxios";
 import useAuth from "../hooks/useAuth";
@@ -7,6 +7,7 @@ import { useForm } from "../hooks/useForm";
 
 export const Login = () => {
 
+  const navigate = useNavigate()
   const [alert,setAlert] = useState({});
   const {setAuth} = useAuth();
   const handleShowAlert = (msg, time = true) => {
@@ -29,6 +30,7 @@ export const Login = () => {
   const {email,password} = formValues;
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
     if([email,password].includes("")){
       handleShowAlert("Todos los campos son obligatorios");
@@ -42,10 +44,11 @@ export const Login = () => {
         password
       })
 
-      //console.log(data);
+      console.log(data);
       
       setAuth(data.user);
       sessionStorage.setItem('token',data.token);
+      navigate('proyects')
 
     }catch (error) {
       console.error(error)

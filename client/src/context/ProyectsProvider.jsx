@@ -93,7 +93,31 @@ const showAlert = (msg, time = true) => {
         setLoading(false)
     }
   }
+  /*const addCollaborator = async (proyect) => {
+    const token = sessionStorage.getItem('token');
+        if(!token) return null
 
+        const config = {
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : token
+            }
+
+        }
+        const {result} = await clientAxios.get('/proyects/collaborator/add/'+_id,{collaborator},config);
+        const {data} = await clientAxios.delete(`/proyects/${id}`, config);
+
+        const proyectsFiltered = proyects.filter(proyect => proyect._id !== id);
+        setProyect(proyectsFiltered);
+
+        Toast.fire({
+            icon : 'success',
+            title : data.msg
+
+        });
+
+        navigate('proyects')
+  }*/
   const storeProyect = async (proyect) => {
     try {
         const token = sessionStorage.getItem('token');
@@ -175,6 +199,36 @@ const showAlert = (msg, time = true) => {
         showAlert(error.response ? error.response.data.msg : 'Upps, hubo un error',false)
     }
   }
+  const deleteCollaborator = async (id,idCollab) => {
+    try {
+        const token = sessionStorage.getItem('token');
+        if(!token) return null
+
+        const config = {
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : token
+            }
+
+        }
+        const {data} = await clientAxios.delete(`/collaborator/remove/${id}/${idCollab}`, config);
+
+        const proyectsFiltered = proyects.filter(proyect => proyect._id !== id);
+        setProyect(proyectsFiltered);
+
+        Toast.fire({
+            icon : 'success',
+            title : data.msg
+
+        });
+
+        navigate('proyects')
+
+    }catch (error) {
+        console.error;
+        showAlert(error.response ? error.response.data.msg : 'Upps, hubo un error',false)
+    }
+}
 
     return (
         <ProyectsContext.Provider
@@ -187,7 +241,8 @@ const showAlert = (msg, time = true) => {
                 proyect,
                 getProyect,
                 storeProyect,
-                deleteProyect
+                deleteProyect,
+                deleteCollaborator
             }}
         >
             {children}

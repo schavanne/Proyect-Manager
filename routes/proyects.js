@@ -13,7 +13,7 @@ router
         .put(update)
         .delete(remove)
 router
-    .get('/collaborator/add',addCollaborator)
-    .delete('/collaborator/remove',removeCollaborator)
+    .get('/collaborator/add/:id',addCollaborator)
+    .delete('/collaborator/remove/:id/:idColab',removeCollaborator)
 
 module.exports = router;

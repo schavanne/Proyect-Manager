@@ -47,7 +47,7 @@ export const ProyectEdit = () => {
           </svg>
           <button
           className="uppercase font-bold"
-          /* onClick={} */
+          onClick={handleDelete} 
           >
             Eliminar
           </button>
