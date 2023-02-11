@@ -8,7 +8,7 @@ export const Collaborator = () => {
       </p>
       <div>
         <button className='bg-red-600 p-2 text-white uppercase font-bold text-sm rounded-lg'
-        /* onClick={handleDelete} */
+        onClick={handleDelete}
         >
           Eliminar
         </button>

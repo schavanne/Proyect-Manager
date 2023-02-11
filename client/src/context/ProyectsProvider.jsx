@@ -122,7 +122,7 @@ const showAlert = (msg, time = true) => {
             setProyects(proyectsUpdated);
 
             Toast.fire({
-                icon : 'sucess',
+                icon : 'success',
                 title : data.msg
     
             });
@@ -132,7 +132,7 @@ const showAlert = (msg, time = true) => {
             setProyects([...proyects, data.proyect]);
 
             Toast.fire({
-                icon : 'sucess',
+                icon : 'success',
                 title : data.msg
     
             });
@@ -141,6 +141,36 @@ const showAlert = (msg, time = true) => {
         navigate('proyects')
 
     }catch (error){
+        console.error;
+        showAlert(error.response ? error.response.data.msg : 'Upps, hubo un error',false)
+    }
+  }
+  const deleteProyect = async (id) => {
+    try {
+        const token = sessionStorage.getItem('token');
+        if(!token) return null
+
+        const config = {
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : token
+            }
+
+        }
+        const {data} = await clientAxios.delete(`/proyects/${id}`, config);
+
+        const proyectsFiltered = proyects.filter(proyect => proyect._id !== id);
+        setProyect(proyectsFiltered);
+
+        Toast.fire({
+            icon : 'success',
+            title : data.msg
+
+        });
+
+        navigate('proyects')
+
+    }catch (error) {
         console.error;
         showAlert(error.response ? error.response.data.msg : 'Upps, hubo un error',false)
     }
@@ -156,7 +186,8 @@ const showAlert = (msg, time = true) => {
                 getProyects,
                 proyect,
                 getProyect,
-                storeProyect
+                storeProyect,
+                deleteProyect
             }}
         >
             {children}

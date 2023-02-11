@@ -16,7 +16,7 @@ export const FormProyect = () => {
   const inputDateExpire = useRef(null);
   const inputClient = useRef(null);
 
-  const {formValues, handleInputChange, reset, setFormValues} = useForm({
+  const {loading, formValues, handleInputChange, reset, setFormValues} = useForm({
     name : "",
     description : "",
     dateExpire : "",
@@ -33,8 +33,8 @@ export const FormProyect = () => {
 
     setFormValues({    
       name: proyect.name,
-      description: proyect.name,
-      dateExpire: proyect.name,
+      description: proyect.description,
+      dateExpire: proyect.dateExpire.split('T')[0],
       client: proyect.client,
       })
     }
@@ -47,13 +47,6 @@ export const FormProyect = () => {
       showAlert("Todos los campos son obligatorios");
       return null
     };
-
-    console.log({
-      name,
-      description,
-      dateExpire,
-      client
-    });
 
     storeProyect({
       id : id ? id : null,
